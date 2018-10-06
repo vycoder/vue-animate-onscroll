@@ -1,9 +1,14 @@
 {
   "name": "vue-animate-onscroll",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "A simple component that animates element upon scroll",
   "main": "src/index.js",
   "author": "yev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/josephharveyangeles/vue-animate-onscroll"
+  },
+  "keywords": ["vue", "scroll", "animate", "reveal"],
   "license": "MIT",
   "dependencies": {
     "waypoints": "^4.0.1"
