@@ -2,7 +2,3 @@
 # yarn lockfile v1
 
 
-waypoints@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/waypoints/-/waypoints-4.0.1.tgz#09979a0573810b29627cba4366a284a062ec69c8"
-  integrity sha1-CZeaBXOBCylifLpDZqKEoGLsacg=
