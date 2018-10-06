@@ -1,0 +1,11 @@
+{
+  "name": "vue-animate-onscroll",
+  "version": "0.0.1",
+  "description": "A simple component that animates element upon scroll",
+  "main": "src/index.js",
+  "author": "yev",
+  "license": "MIT",
+  "dependencies": {
+    "waypoints": "^4.0.1"
+  }
+}
