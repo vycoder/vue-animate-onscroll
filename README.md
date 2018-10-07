@@ -1,5 +1,5 @@
 # vue-animate-onscroll
-A simple Vue directive that animates element as they scroll into view.
+A simple Vue directive that animates elements as they scroll into view.
 
 ## Installation
 
