@@ -1,7 +1,7 @@
 {
   "name": "vue-animate-onscroll",
-  "version": "0.0.5",
-  "description": "A simple component that animates element upon scroll",
+  "version": "1.0.1",
+  "description": "A simple Vue directive that animates element as they scroll into view.",
   "main": "src/index.js",
   "author": "yev",
   "repository": {

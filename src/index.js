@@ -1,25 +1,33 @@
-var ScrollAnimate = function(el, binding) {
+var ScrollAnimate = function(el) {
 
-  var params = binding.value;
-  var modifiers = binding.modifiers;
   var oldClasses = el.className;
 
   function isInScrollView(rect){
     return rect.top < document.documentElement.clientHeight && rect.bottom > 0;
   }
 
-  function shouldResetAnimation(isUpwards) {
+  function isDirectionAgnostic(params) {
+    return typeof params === 'string';
+  }
+
+  function shouldResetAnimation(isUpwards, modifiers, params) {
     return modifiers.repeat &&
       (isUpwards && params.down || !isUpwards && params.up);
   }
 
   return {
-    dispatch: function(isUpwards) {
+    dispatch: function(isUpwards, binding) {
+      var params = binding.value;
+      var modifiers = binding.modifiers;
+
       if(!isInScrollView(el.getBoundingClientRect())) {
+        if (modifiers.repeat && isDirectionAgnostic(params)) {
+          el.className = oldClasses;
+        }
         return;
       }
 
-      if (typeof params === 'string') { // implicit repeat
+      if (isDirectionAgnostic(params)) {
         el.className = params;
         return;
       }
@@ -29,7 +37,7 @@ var ScrollAnimate = function(el, binding) {
         return;
       }
       
-      if(shouldResetAnimation(isUpwards)) {
+      if(shouldResetAnimation(isUpwards, modifiers, params)) {
         el.className = oldClasses;
         return;
       }
@@ -39,16 +47,16 @@ var ScrollAnimate = function(el, binding) {
 }
 
 export default {
-  install(Vue, os = {}) {
+  install(Vue) {
     var scrollAnimate;
     Vue.directive('animate-onscroll', {
       bind(el, binding) {
-        scrollAnimate = ScrollAnimate(el, binding);
+        scrollAnimate = ScrollAnimate(el);
       },
       inserted(el, binding) {
         window.addEventListener('scroll', function() {
           var isUpwards = this.oldScroll > this.scrollY;
-          scrollAnimate.dispatch(isUpwards);
+          scrollAnimate.dispatch(isUpwards, binding);
           this.oldScroll = this.scrollY;
         });
       }
