@@ -8,7 +8,8 @@
   "scripts": {
     "clean": "rimraf lib",
     "build": "npm run clean && rollup --config rollup.config.js",
-    "deploy": "npm build && npm version patch && npm publish"
+    "test": "npm run build && jest",
+    "deploy": "npm run test && npm version patch && npm publish"
   },
   "author": "yev",
   "repository": {
@@ -24,6 +25,7 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
+    "jest": "^23.6.0",
     "rimraf": "^2.6.2",
     "rollup": "^0.66.4",
     "rollup-plugin-terser": "^3.0.0"

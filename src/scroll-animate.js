@@ -12,9 +12,10 @@ export default () => {
   const applyAnimationClass = (el, current, newClass) => el.className = `${current} ${(newClass || '')}`
 
   return {
+    isInView: isInScrollView,
     run(el, {value: params, modifiers}, {isUpwards, currentClassName}) {
 
-      if(!isInScrollView(el.getBoundingClientRect())) {
+      if(!this.isInView(el.getBoundingClientRect())) {
         if (modifiers.repeat && isDirectionAgnostic(params)) {
           return applyAnimationClass(el, currentClassName)
         }
