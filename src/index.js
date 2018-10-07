@@ -2,31 +2,38 @@ var ScrollAnimate = function(el, binding) {
 
   var params = binding.value;
   var modifiers = binding.modifiers;
-  var defaultClass = el.className;
+  var oldClasses = el.className;
 
   function isInScrollView(rect){
     return rect.top < document.documentElement.clientHeight && rect.bottom > 0;
   }
 
+  function shouldResetAnimation(isUpwards) {
+    return modifiers.repeat &&
+      (isUpwards && params.down || !isUpwards && params.up);
+  }
+
   return {
     dispatch: function(isUpwards) {
       if(!isInScrollView(el.getBoundingClientRect())) {
-        if (modifiers.repeat) { // there will be a decision matrix for isUpwards and params.up or params.down
-          // el.className = oldClasses;
-        }
         return;
       }
 
-      var classToApply;
-      if (typeof params === 'string') {
-        classToApply = params;
+      if (typeof params === 'string') { // implicit repeat
+        el.className = params;
+        return;
       }
-      else if (params.down && params.up) { // implicit repeat
-        classToApply = isUpwards ? params.up : params.down;
-      } else {
-        classToApply = params.up || params.down;
+
+      if (params.down && params.up) { // implicit repeat
+        el.className = isUpwards ? params.up : params.down;
+        return;
       }
-      el.className = defaultClass + ' ' + classToApply;
+      
+      if(shouldResetAnimation(isUpwards)) {
+        el.className = oldClasses;
+        return;
+      }
+      el.className = params.up || params.down;
     }
   }
 }
@@ -45,6 +52,6 @@ export default {
           this.oldScroll = this.scrollY;
         });
       }
-    })
+    });
   }
 }
