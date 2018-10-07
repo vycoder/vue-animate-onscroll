@@ -2,7 +2,14 @@
   "name": "vue-animate-onscroll",
   "version": "1.0.1",
   "description": "A simple Vue directive that animates element as they scroll into view.",
-  "main": "src/index.js",
+  "main": "dist/vue-animate-onscroll.cjs.js",
+  "module": "dist/vue-animate-onscroll.es.js",
+  "jsnext:main": "dist/vue-animate-onscroll.es.js",
+  "scripts": {
+    "clean": "rimraf lib",
+    "build": "npm run clean && rollup --config rollup.config.js",
+    "deploy": "npm build && npm version patch && npm publish"
+  },
   "author": "yev",
   "repository": {
     "type": "git",
@@ -15,5 +22,10 @@
     "reveal"
   ],
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "rimraf": "^2.6.2",
+    "rollup": "^0.66.4",
+    "rollup-plugin-terser": "^3.0.0"
+  }
 }
