@@ -9,7 +9,8 @@
     "clean": "rimraf lib",
     "build": "npm run clean && rollup --config rollup.config.js",
     "test": "npm run build && jest",
-    "deploy": "npm run test && npm version patch && npm publish"
+    "deploy": "npm run test && npm version patch && npm publish",
+    "prepublishOnly": "git push --follow-tags"
   },
   "author": "yev",
   "repository": {

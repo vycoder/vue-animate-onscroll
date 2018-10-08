@@ -1,22 +1,28 @@
-const createFixture = (instance, {  currentClassName = '',
+const createFixture = (instance, {  previousClassName = '',
                                     animationClass,
-                                    isUpwards,
                                     repeat = false }) => {
+
+  const run = function(isInView, isUpwards = false) {
+    instance.isInView = () => isInView
+    instance.run(this.el, this.binding, {isUpwards, previousClassName})
+  }
+
   return {
     el: {
-      className: currentClassName,
+      className: previousClassName,
       getBoundingClientRect(){}
     },
     binding: {
       value: animationClass,
       modifiers: {repeat}
     },
-    state: { isUpwards, currentClassName },
     getClassName: function() { return this.el.className.trim() },
     getClassNames: function() { return this.getClassName().split(' ') },
-    run: function(isInView) {
-      instance.isInView = () => isInView
-      instance.run(this.el, this.binding, this.state)
+    scrollDown: function(isInView) {
+      run.call(this, isInView)
+    },
+    scrollUp: function(isInView) {
+      run.call(this, isInView, true)
     }
   }
 }

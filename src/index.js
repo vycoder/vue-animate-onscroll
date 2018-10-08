@@ -9,10 +9,10 @@ export default {
         scrollAnimate = ScrollAnimate()
       },
       inserted(el, binding) {
-        const currentClassName = el.className
+        const previousClassName = el.className
         window.addEventListener('scroll', function() {
           const isUpwards = this.oldScroll > this.scrollY
-          scrollAnimate.run(el, binding, {isUpwards, currentClassName})
+          scrollAnimate.run(el, binding, {isUpwards, previousClassName})
           this.oldScroll = this.scrollY
         })
       }
