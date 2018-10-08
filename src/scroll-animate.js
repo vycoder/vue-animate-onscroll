@@ -13,7 +13,7 @@ export default () => {
   const shouldResetAnimation = ({params, isUpwards, repeat}) => repeat &&
                                     (isUpwards && params.down || !isUpwards && params.up)
 
-  const applyAnimationClass = (el, current, newClass = '') => el.className = `${current} ${newClass}`
+  const applyAnimationClass = (el, current, newClass = '') => el.className = `${current} ${newClass}`.trim()
 
   return {
     isInView: isInScrollView,
@@ -45,6 +45,3 @@ export default () => {
   }
   
 }
-
-
-
