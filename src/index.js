@@ -3,18 +3,17 @@ import ScrollAnimate from './scroll-animate'
 export default {
   ScrollAnimate,
   install(Vue) {
-    let scrollAnimate;
     Vue.directive('animate-onscroll', {
-      bind(el, binding) {
-        scrollAnimate = ScrollAnimate()
-      },
       inserted(el, binding) {
+        const scrollAnimate = ScrollAnimate(Date.now())
         const previousClassName = el.className
+        let lastScrollTop = window.pageYOffset
         window.addEventListener('scroll', function() {
-          const isUpwards = this.oldScroll > this.scrollY
+          let scrollTop = window.pageYOffset || document.documentElement.scrollTop
+          const isUpwards = scrollTop < lastScrollTop
           scrollAnimate.run(el, binding, {isUpwards, previousClassName})
-          this.oldScroll = this.scrollY
-        })
+          lastScrollTop = scrollTop <= 0 ? 0 : scrollTop
+        }, false)
       }
     })
   }
