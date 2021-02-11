@@ -8,6 +8,7 @@ export default {
         const scrollAnimate = ScrollAnimate(Date.now())
         const previousClassName = el.className
         let lastScrollTop = window.pageYOffset
+        scrollAnimate.run(el, binding, {isUpwards: false, previousClassName})
         window.addEventListener('scroll', function() {
           let scrollTop = window.pageYOffset || document.documentElement.scrollTop
           const isUpwards = scrollTop < lastScrollTop
