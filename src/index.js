@@ -7,11 +7,12 @@ export default {
       inserted(el, binding) {
         const scrollAnimate = ScrollAnimate(Date.now())
         const previousClassName = el.className
+        const offset = parseInt(el.dataset.animateOnscrollOffset || 0);
         let lastScrollTop = window.pageYOffset
         window.addEventListener('scroll', function() {
           let scrollTop = window.pageYOffset || document.documentElement.scrollTop
           const isUpwards = scrollTop < lastScrollTop
-          scrollAnimate.run(el, binding, {isUpwards, previousClassName})
+          scrollAnimate.run(el, binding, {offset, isUpwards, previousClassName})
           lastScrollTop = scrollTop <= 0 ? 0 : scrollTop
         }, false)
       }
