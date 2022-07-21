@@ -2,9 +2,11 @@ export default () => {
 
   const getClientHeight = () => document.documentElement.clientHeight
 
-  const isInScrollView = ({top, bottom}) => top < getClientHeight() && bottom > 0
+  const isInScrollView = ({top, bottom}, offset) => (top + offset) < getClientHeight() && (bottom - offset) > 0
   
-  const isDirectionAgnostic = (params) => typeof params === 'string'
+  const isDirectionAgnostic = (params) => !(params.down || params.up)
+
+  const isOutAnimationOnly = (params) => !params.in && params.out
 
   const isBiDirectional = (params) => params.down && params.up
 
@@ -13,21 +15,31 @@ export default () => {
   const shouldResetAnimation = ({params, isUpwards, repeat}) => repeat &&
                                     (isUpwards && params.down || !isUpwards && params.up)
 
-  const applyAnimationClass = (el, current, newClass = '') => el.className = `${current} ${newClass}`.trim()
+  const applyAnimationClass = (el, current, newClass = '') => {
+    el.className = `${current} ${newClass}`.trim()
+  }
 
   return {
     isInView: isInScrollView,
-    run(el, {value: params, modifiers}, {isUpwards, previousClassName = ''}) {
-
-      if(!this.isInView(el.getBoundingClientRect())) {
-        if (modifiers.repeat && isDirectionAgnostic(params)) {
-          return applyAnimationClass(el, previousClassName)
-        }
+    run(el, {value: params, modifiers}, {offset, isUpwards, previousClassName = ''}) {
+      
+      if(isOutAnimationOnly(params)) {
+        console.warn("animate-on-scroll", "'out' parameter can't be used alone. 'in' required")
         return
       }
 
+      let rect = el.getBoundingClientRect();
+      if(!this.isInView(rect, offset)) {
+        const animationClass = params.out || ''
+        if (modifiers.repeat && (isDirectionAgnostic(params) || animationClass)) {
+          return applyAnimationClass(el, previousClassName, animationClass)
+        }
+        return
+      } 
+
       if (isDirectionAgnostic(params)) {
-        return applyAnimationClass(el, previousClassName, params)
+        const animationClass = params.in || params
+        return applyAnimationClass(el, previousClassName, animationClass)
       }
 
       if (modifiers.repeat ||

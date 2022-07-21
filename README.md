@@ -35,10 +35,22 @@ Pass the desired class as a string literal (in single quotes) in your `Vue` temp
 <div v-animate-onscroll="'animated flip'">Animate me once upon scroll</div>
 ```
 
+### Offset
+To trigger the animation with an offset at the top and the bottom you can add an `data-animate-onscroll-offset` attribute like:
+```html
+<div v-animate-onscroll="'animated flip'" data-animate-onscroll-offset="100">Animate me upon scroll with an offset of 100px</div>
+```
+
 ### Repeat Modifier
 Note that by default the animation will only trigger once: the first time the element scrolled into view. If you want to repeat the animation everytime it was scrolled into view, use the `repeat` modifier:
 ```html
 <div v-animate-onscroll.repeat="'animated flip'">Animate me upon scroll forever</div>
+```
+
+### In-/Out-Animations
+For an infinity in- and out-animation on scroll you can use `in` and `out` keys. For the best result use a combination with `data-animate-onscroll-offset`:
+```html
+<div v-animate-onscroll.repeat="{in: 'animated flipInX', out: 'animated flipOutX'}" data-animate-onscroll-offset="100">Animate me upon scroll forever</div>
 ```
 
 ### Scroll Direction
