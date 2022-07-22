@@ -23,6 +23,7 @@ describe('ScrollAnimate', function() {
 
   describe('Non-directional', () => {
     const animationClass = 'flip'
+    const offset = 100
 
     test('should add animation classes', () => {
       const fixture = createFixture(scrollAnimate, { animationClass })
@@ -32,9 +33,31 @@ describe('ScrollAnimate', function() {
       expect(fixture.getClassName()).toEqual(animationClass)
     })
 
+    test('should add animation classes by offset', () => {
+      const fixture = createFixture(scrollAnimate, { animationClass, offset })
+
+      expect(fixture.getClassName()).toBeFalsy()
+      fixture.scrollDown(true)
+      expect(fixture.getClassName()).toEqual(animationClass)
+    })
+
     test('should toggle animation when repeat is on', () => {
       const fixture = createFixture(
         scrollAnimate, { animationClass, repeat: true }
+      )
+
+      expect(fixture.getClassName()).toBeFalsy()
+      fixture.scrollDown(true)
+      expect(fixture.getClassName()).toEqual(animationClass)
+      fixture.scrollDown(false)
+      expect(fixture.getClassName()).toBeFalsy()
+      fixture.scrollUp(true)
+      expect(fixture.getClassName()).toEqual(animationClass)
+    })
+
+    test('should toggle animation when repeat is on by offset', () => {
+      const fixture = createFixture(
+        scrollAnimate, { animationClass, repeat: true, offset }
       )
 
       expect(fixture.getClassName()).toBeFalsy()
@@ -64,6 +87,210 @@ describe('ScrollAnimate', function() {
       expect(fixture.getClassName()).toEqual(animationClass)
     })
 
+    test('should not toggle animation when repeat is off by offset', () => {
+      const fixture = createFixture(
+        scrollAnimate, { animationClass, repeat: false, offset }
+      )
+
+      expect(fixture.getClassName()).toBeFalsy()
+      fixture.scrollDown(true)
+      expect(fixture.getClassName()).toEqual(animationClass)
+      fixture.scrollDown(false)
+      expect(fixture.getClassName()).toEqual(animationClass)
+      fixture.scrollUp(true)
+      expect(fixture.getClassName()).toEqual(animationClass)
+      fixture.scrollUp(false)
+      fixture.scrollDown(true)
+      fixture.scrollDown(false)
+      expect(fixture.getClassName()).toEqual(animationClass)
+    })
+  })
+
+  describe('In animation', () => {
+    const animationClass = {in: 'flip'}
+    const offset = 100
+
+    test('should add animation classes', () => {
+      const fixture = createFixture(scrollAnimate, { animationClass })
+
+      expect(fixture.getClassName()).toBeFalsy()
+      fixture.scrollDown(true)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+    })
+
+    test('should add animation classes by offset', () => {
+      const fixture = createFixture(scrollAnimate, { animationClass, offset })
+
+      expect(fixture.getClassName()).toBeFalsy()
+      fixture.scrollDown(true)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+    })
+
+    test('should toggle animation when repeat is on', () => {
+      const fixture = createFixture(
+        scrollAnimate, { animationClass, repeat: true }
+      )
+
+      expect(fixture.getClassName()).toBeFalsy()
+      fixture.scrollDown(true)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+      fixture.scrollDown(false)
+      expect(fixture.getClassName()).toBeFalsy()
+      fixture.scrollUp(true)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+    })
+
+    test('should toggle animation when repeat is on by offset', () => {
+      const fixture = createFixture(
+        scrollAnimate, { animationClass, repeat: true, offset }
+      )
+
+      expect(fixture.getClassName()).toBeFalsy()
+      fixture.scrollDown(true)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+      fixture.scrollDown(false)
+      expect(fixture.getClassName()).toBeFalsy()
+      fixture.scrollUp(true)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+    })
+    
+    test('should not toggle animation when repeat is off', () => {
+      const fixture = createFixture(
+        scrollAnimate, { animationClass, repeat: false }
+      )
+
+      expect(fixture.getClassName()).toBeFalsy()
+      fixture.scrollDown(true)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+      fixture.scrollDown(false)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+      fixture.scrollUp(true)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+      fixture.scrollUp(false)
+      fixture.scrollDown(true)
+      fixture.scrollDown(false)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+    })
+
+    test('should not toggle animation when repeat is off by offset', () => {
+      const fixture = createFixture(
+        scrollAnimate, { animationClass, repeat: false, offset }
+      )
+
+      expect(fixture.getClassName()).toBeFalsy()
+      fixture.scrollDown(true)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+      fixture.scrollDown(false)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+      fixture.scrollUp(true)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+      fixture.scrollUp(false)
+      fixture.scrollDown(true)
+      fixture.scrollDown(false)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+    })
+  })
+
+  describe('Out animation', () => {
+    const animationClass = {out: 'flipOut'}
+
+    test('should print wrong parameter usage warning', () => {
+      jest.spyOn(console, 'warn').mockImplementation()
+      const fixture = createFixture(scrollAnimate, { animationClass })
+
+      expect(fixture.getClassName()).toBeFalsy()
+      fixture.scrollDown(true)
+      expect(console.warn).toHaveBeenCalledWith(
+        expect.stringContaining("animate-on-scroll"),
+        expect.stringContaining("'out' parameter can't be used alone. 'in' required"),
+      )
+      expect(fixture.getClassName()).toBeFalsy()
+    })
+  })
+
+  describe('InOut animation', () => {
+    const animationClass = {in: 'flip', out: 'flipOut'}
+    const offset = 100
+
+    test('should add animation classes', () => {
+      const fixture = createFixture(scrollAnimate, { animationClass })
+
+      expect(fixture.getClassName()).toBeFalsy()
+      fixture.scrollDown(true)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+    })
+
+    test('should add animation classes by offset', () => {
+      const fixture = createFixture(scrollAnimate, { animationClass, offset })
+
+      expect(fixture.getClassName()).toBeFalsy()
+      fixture.scrollDown(true)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+    })
+
+    test('should toggle animation when repeat is on', () => {
+      const fixture = createFixture(
+        scrollAnimate, { animationClass, repeat: true }
+      )
+
+      expect(fixture.getClassName()).toBeFalsy()
+      fixture.scrollDown(true)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+      fixture.scrollDown(false)
+      expect(fixture.getClassName()).toEqual(animationClass.out)
+      fixture.scrollUp(true)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+    })
+
+    test('should toggle animation when repeat is on by offset', () => {
+      const fixture = createFixture(
+        scrollAnimate, { animationClass, repeat: true, offset }
+      )
+
+      expect(fixture.getClassName()).toBeFalsy()
+      fixture.scrollDown(true)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+      fixture.scrollDown(false)
+      expect(fixture.getClassName()).toEqual(animationClass.out)
+      fixture.scrollUp(true)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+    })
+
+    test('should not toggle animation when repeat is off', () => {
+      const fixture = createFixture(
+        scrollAnimate, { animationClass, repeat: false }
+      )
+
+      expect(fixture.getClassName()).toBeFalsy()
+      fixture.scrollDown(true)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+      fixture.scrollDown(false)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+      fixture.scrollUp(true)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+      fixture.scrollUp(false)
+      fixture.scrollDown(true)
+      fixture.scrollDown(false)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+    })
+
+    test('should not toggle animation when repeat is off by offset', () => {
+      const fixture = createFixture(
+        scrollAnimate, { animationClass, repeat: false, offset }
+      )
+
+      expect(fixture.getClassName()).toBeFalsy()
+      fixture.scrollDown(true)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+      fixture.scrollDown(false)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+      fixture.scrollUp(true)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+      fixture.scrollUp(false)
+      fixture.scrollDown(true)
+      fixture.scrollDown(false)
+      expect(fixture.getClassName()).toEqual(animationClass.in)
+    })
   })
 
   describe('Downwards animation', () => {
