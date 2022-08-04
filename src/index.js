@@ -9,6 +9,7 @@ export default {
         const previousClassName = el.className
         const offset = parseInt(el.dataset.animateOnscrollOffset || 0);
         let lastScrollTop = window.pageYOffset
+        scrollAnimate.run(el, binding, {isUpwards: false, previousClassName})
         window.addEventListener('scroll', function() {
           let scrollTop = window.pageYOffset || document.documentElement.scrollTop
           const isUpwards = scrollTop < lastScrollTop
