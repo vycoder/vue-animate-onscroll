@@ -21,14 +21,19 @@ export default () => {
 
   return {
     isInView: isInScrollView,
-    run(el, {value: params, modifiers}, {offset, isUpwards, previousClassName = ''}) {
+    run(el, {value: params, modifiers}, {useParent, offset, isUpwards, previousClassName = ''}) {
       
       if(isOutAnimationOnly(params)) {
         console.warn("animate-on-scroll", "'out' parameter can't be used alone. 'in' required")
         return
       }
 
-      let rect = el.getBoundingClientRect();
+      let rect = null;
+      if(useParent) {
+        rect = el.parentNode.getBoundingClientRect();
+      } else {
+        rect = el.getBoundingClientRect();
+      }
       if(!this.isInView(rect, offset)) {
         const animationClass = params.out || ''
         if (modifiers.repeat && (isDirectionAgnostic(params) || animationClass)) {
